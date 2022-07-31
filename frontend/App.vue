@@ -1,7 +1,12 @@
 <template>
   <div class="container">
     <div class="grid mt-4">
-      <Container class="g-col-6" v-for="ct in containers" :key="ct.Id" :container="ct" />
+      <Container 
+        class="g-col-6" 
+        v-for="ct in containers" 
+        :key="ct.Id" 
+        :container="ct" 
+      />
     </div>
   </div>
 </template>
@@ -9,10 +14,9 @@
 <script setup>
 import { ref } from 'vue'
 import Container from './Container.vue'
+import socket from './socket'
 
 const containers = ref([])
-
-const socket = new WebSocket('ws://localhost:1025/ws')
 
 socket.onopen = () => {
   socket.send('get_containers')
@@ -25,6 +29,16 @@ socket.onmessage = (event) => {
   switch (type) {
     case 'get_containers':
       containers.value = payload
+      break;
+    case 'start_container':
+      // alert('container started')
+      break;
+    case 'docker_event':
+      const parsed_payload = JSON.parse(payload)
+      if (parsed_payload.Type == 'container') {
+        const index = containers.value.findIndex(ct => ct.Id == parsed_payload.id)
+        containers.value[index].Status = parsed_payload.status
+      }
       break;
   }
 }

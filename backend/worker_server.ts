@@ -3,12 +3,23 @@ import html from './html.ts'
 import Docker from "https://deno.land/x/denocker@v0.2.0/index.ts"
 
 const docker = new Docker('/var/run/docker.sock')
+let websocket
 
 self.onmessage = async (e) => {
-  const oakApp = new Application()
 
+  const { message_port } = e.data
+
+  message_port.onmessage = (message_e) => {
+    console.log('message sent from worker_events: '+message_e.data.payload)
+    websocket.send(JSON.stringify({
+      type: 'docker_event',
+      payload: message_e.data.payload
+    }))
+  }
+  
   switch (e.data.command) {
     case 'serve': {
+      const oakApp = new Application()
       const router = new Router()
 
       oakApp.addEventListener("listen", ({ hostname, port, secure }) => {
@@ -23,24 +34,34 @@ self.onmessage = async (e) => {
       router
       .get('/ws', async (ctx, next) => {
         if (!ctx.isUpgradable) ctx.throw(501)
-        const ws = ctx.upgrade()
-        ws.onopen = () => {
+        websocket = ctx.upgrade()
+        websocket.onopen = () => {
           console.log('connected to client')
         }
 
-        ws.onmessage = async (event) => {
-          const msg = event.data
+        websocket.onmessage = async (event) => {
+          const msg : string = event.data
 
           if (msg == 'get_containers') {
             const containers = await docker.containers.list({ all: true })
-            ws.send(JSON.stringify({
+            // console.log(containers[16])
+            websocket.send(JSON.stringify({
               type: 'get_containers',
               payload: containers
             }))
           }
+
+          if (msg.includes('start_container')) {
+            const id = msg.split(':')[1]
+            await docker.containers.start(id)
+            websocket.send(JSON.stringify({
+              type: 'start_container',
+              payload: id
+            }))
+          }
         }
 
-        ws.onclose = () => {
+        websocket.onclose = () => {
           console.log('closing socket')
         }
       })
@@ -62,6 +83,9 @@ self.onmessage = async (e) => {
 
       oakApp.listen({ port: e.data.port })
     } break;
+    case 'send_over_websocket':
+      websocket.send(e.data.payload)
+      break
     case 'quit':
       self.close()
       break
