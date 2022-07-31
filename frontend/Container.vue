@@ -1,7 +1,7 @@
 <template>
 <div class="d-flex">
   <div class="rounded-start border border-end-0 px-3 py-2 w-100">
-    {{ container.name }}
+    {{ container.Names[0].substring(1) }}
   </div>
   
   <button class="btn btn-success rounded-0">Start</button>

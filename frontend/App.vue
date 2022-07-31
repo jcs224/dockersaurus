@@ -10,15 +10,25 @@
 import { ref, reactive } from 'vue'
 import Container from './Container.vue'
 
-const containers = reactive([
-  { name: 'cool 1' },
-  { name: 'cool 2' },
-  { name: 'cool 3' },
-  { name: 'cool 4' },
-  { name: 'cool 5' },
-  { name: 'cool 6' },
-  { name: 'cool 7' },
-  { name: 'cool 8' },
-])
+const containers = reactive([])
+
+const socket = new WebSocket('ws://localhost:1025/ws')
+
+socket.onopen = () => {
+  socket.send('get_containers')
+}
+
+socket.onmessage = (event) => {
+  const event_result = JSON.parse(event.data)
+  const { type, payload } = event_result
+
+  switch (type) {
+    case 'get_containers':
+      payload.forEach(ct => {
+        containers.push(ct)
+      })
+      break;
+  }
+}
 
 </script>
