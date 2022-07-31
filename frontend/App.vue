@@ -7,10 +7,10 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref } from 'vue'
 import Container from './Container.vue'
 
-const containers = reactive([])
+const containers = ref([])
 
 const socket = new WebSocket('ws://localhost:1025/ws')
 
@@ -24,9 +24,7 @@ socket.onmessage = (event) => {
 
   switch (type) {
     case 'get_containers':
-      payload.forEach(ct => {
-        containers.push(ct)
-      })
+      containers.value = payload
       break;
   }
 }
