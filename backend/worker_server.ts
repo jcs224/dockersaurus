@@ -1,13 +1,22 @@
+/// <reference lib="deno.worker" />
+
 import { Application, Context, Router } from "https://deno.land/x/oak@v10.6.0/mod.ts";
 import html from './html.ts'
 import Docker from "https://deno.land/x/denocker@v0.2.0/index.ts"
 
+interface ServerWorkerArguments {
+  message_port: MessagePort,
+  command: string,
+  port: number,
+  environment: string
+}
+
 const docker = new Docker('/var/run/docker.sock')
-let websocket
+let websocket: WebSocket
 
 self.onmessage = async (e) => {
 
-  const { message_port } = e.data
+  const { message_port } : ServerWorkerArguments = e.data
 
   message_port.onmessage = (message_e) => {
     console.log('message sent from worker_events: '+message_e.data.payload)

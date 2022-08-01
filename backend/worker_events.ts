@@ -1,7 +1,14 @@
+/// <reference lib="deno.worker" />
+
 import { readLines } from "https://deno.land/std@0.150.0/io/mod.ts";
 
+interface EventWorkerArguments{
+  command: string,
+  message_port: MessagePort
+}
+
 self.onmessage = async (e) => {
-  const { message_port } = e.data
+  const { message_port } : EventWorkerArguments = e.data
 
   switch (e.data.command) {
     case 'get_docker_events':
