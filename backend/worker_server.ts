@@ -3,6 +3,8 @@
 import { Application, Context, Router } from "https://deno.land/x/oak@v10.6.0/mod.ts";
 import html from './html.ts'
 import Docker from "https://deno.land/x/denocker@v0.2.0/index.ts"
+import mime from 'https://cdn.skypack.dev/mime-types'
+import readFileSync from '../compiled_bundle.js'
 
 interface ServerWorkerArguments {
   message_port: MessagePort,
@@ -76,9 +78,10 @@ self.onmessage = async (e) => {
       })
       .get('/public/(.*)', async (ctx, next) => {
         try {
-          await ctx.send({
-            root: `${Deno.cwd()}`
-          })
+          const requestMimeType = mime.lookup(ctx.request.url.pathname)
+          const responseMimeType = mime.contentType(requestMimeType)
+          ctx.response.headers.set('Content-Type', responseMimeType)
+          ctx.response.body = readFileSync(ctx.request.url.pathname.substring(1))
         } catch {
           await next()
         }
