@@ -7,7 +7,7 @@
     {{ container.Names[0].substring(1) }}
   </div>
   
-  <button v-if="container.State == 'running'" class="btn btn-success rounded-0" @click="stopContainer(container.Id)">Stop</button>
+  <button v-if="container.State == 'running'" class="btn btn-secondary rounded-0" @click="stopContainer(container.Id)">Stop</button>
   <button v-else class="btn btn-success rounded-0" @click="startContainer(container.Id)">Start</button>
   <button class="btn btn-danger rounded-0 rounded-end">Delete</button>
 </div>
