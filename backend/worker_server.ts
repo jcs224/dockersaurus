@@ -70,6 +70,15 @@ self.onmessage = async (e) => {
               payload: id
             }))
           }
+
+          if (msg.includes('stop_container')) {
+            const id = msg.split(':')[1]
+            await docker.containers.stop(id)
+            websocket.send(JSON.stringify({
+              type: 'stop_container',
+              payload: id
+            }))
+          }
         }
 
         websocket.onclose = () => {

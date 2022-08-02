@@ -33,11 +33,16 @@ socket.onmessage = (event) => {
     case 'start_container':
       // alert('container started')
       break;
+    case 'stop_container':
+      break;
     case 'docker_event':
       const parsed_payload = JSON.parse(payload)
       if (parsed_payload.Type == 'container') {
-        const index = containers.value.findIndex(ct => ct.Id == parsed_payload.id)
-        containers.value[index].Status = parsed_payload.status
+        // const index = containers.value.findIndex(ct => ct.Id == parsed_payload.id)
+
+        if (parsed_payload.status == 'start' || parsed_payload.status == 'stop') {
+          socket.send('get_containers')
+        }
       }
       break;
   }
