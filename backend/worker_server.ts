@@ -96,7 +96,8 @@ self.onmessage = async (e) => {
         }
       })
       .get('/', async (ctx) => {
-        ctx.response.body = await html(e.data.dev_mode)
+        const app_html = await html(e.data.dev_mode, e.data.port)
+        ctx.response.body = app_html
       })
 
       oakApp.use(router.routes())
