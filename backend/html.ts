@@ -1,6 +1,6 @@
 import { manifest } from './helpers.ts'
 
-export default async function(environment : string = 'local') {
+export default async function(dev_mode: Number) {
   return /* html */`<!DOCTYPE html>
   <html lang="en">
   <head>
@@ -8,7 +8,7 @@ export default async function(environment : string = 'local') {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dockersaurus</title>
-    ${ environment == 'local' 
+    ${ dev_mode
     ? `
     <script type="module" src="http://localhost:5173/@vite/client"></script>
     <script type="module" src="http://localhost:5173/frontend/app.js"></script>

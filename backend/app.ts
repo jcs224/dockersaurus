@@ -1,4 +1,3 @@
-import "https://deno.land/x/dotenv@v3.2.0/load.ts";
 import { Webview, SizeHint } from "https://deno.land/x/webview@0.7.3/mod.ts";
 import { getPort } from 'https://deno.land/x/getport@2.0.0/mod.ts'
 
@@ -12,7 +11,7 @@ worker_server.postMessage({
   message_port: channel.port1,
   command: 'serve', 
   port: port, 
-  environment: Deno.env.get('ENVIRONMENT')
+  dev_mode: Deno.env.get('DEV_MODE') || false
 }, [
   channel.port1
 ])

@@ -10,7 +10,7 @@ interface ServerWorkerArguments {
   message_port: MessagePort,
   command: string,
   port: number,
-  environment: string
+  dev_mode: number
 }
 
 const docker = new Docker('/var/run/docker.sock')
@@ -21,7 +21,7 @@ self.onmessage = async (e) => {
   const { message_port } : ServerWorkerArguments = e.data
 
   message_port.onmessage = (message_e) => {
-    console.log('message sent from worker_events: '+message_e.data.payload)
+    // console.log('message sent from worker_events: '+message_e.data.payload)
     websocket.send(JSON.stringify({
       type: 'docker_event',
       payload: message_e.data.payload
@@ -96,7 +96,7 @@ self.onmessage = async (e) => {
         }
       })
       .get('/', async (ctx) => {
-        ctx.response.body = await html(e.data.environment)
+        ctx.response.body = await html(e.data.dev_mode)
       })
 
       oakApp.use(router.routes())

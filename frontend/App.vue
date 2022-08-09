@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="grid mt-4">
+    <div class="grid my-3 gap-3">
       <Container 
         class="g-col-12 g-col-lg-6" 
         v-for="ct in containers" 

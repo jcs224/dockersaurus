@@ -1,5 +1,6 @@
 {
   "tasks": {
+    "dev": "export DEV_MODE=1 && deno run -A --unstable backend/app.ts",
     "compile": "pnpx vite build && denobundle public compiled_bundle.js && rm -rf public && deno bundle backend/app.ts build/dockersaurus.js"
   }
 }
