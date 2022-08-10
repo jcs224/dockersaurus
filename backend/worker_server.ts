@@ -104,6 +104,7 @@ self.onmessage = async (e) => {
       oakApp.use(router.allowedMethods())
 
       oakApp.listen({ port: e.data.port })
+      self.postMessage('server_started')
     } break;
     case 'send_over_websocket':
       websocket.send(e.data.payload)

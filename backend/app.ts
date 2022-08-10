@@ -30,8 +30,12 @@ webview.size = {
   hint: SizeHint.NONE
 }
 
-webview.navigate(`http://localhost:${port}`);
+worker_server.onmessage = (e) => {
+  if (e.data == 'server_started') {
+    webview.navigate(`http://localhost:${port}`);
+    webview.run();
+    worker_server.postMessage({ command: 'quit' })
+    worker_events.postMessage({ command: 'quit' })
+  }
+}
 
-webview.run();
-worker_server.postMessage({ command: 'quit' })
-worker_events.postMessage({ command: 'quit' })
