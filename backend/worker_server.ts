@@ -4,7 +4,7 @@ import { Application, Context, Router } from "https://deno.land/x/oak@v10.6.0/mo
 import html from './html.ts'
 import Docker from "https://deno.land/x/denocker@v0.2.0/index.ts"
 import mime from 'https://cdn.skypack.dev/mime-types'
-import readFileSync from '../compiled_bundle.js'
+import readFileSync from './compiled_static_files.js'
 
 interface ServerWorkerArguments {
   message_port: MessagePort,

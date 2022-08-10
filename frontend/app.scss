@@ -6,12 +6,12 @@ $enable-cssgrid: true;
 @import "../node_modules/bootstrap/scss/functions";
 @import "../node_modules/bootstrap/scss/variables";
 
-$custom-colors: (
-  'purple': $purple,
-  'teal': $teal-200,
-);
+// $custom-colors: (
+//   'purple': $purple,
+//   'teal': $teal-200,
+// );
 
-$theme-colors: map-merge($theme-colors, $custom-colors);
+// $theme-colors: map-merge($theme-colors, $custom-colors);
 
 @import "../node_modules/bootstrap/scss/maps";
 @import "../node_modules/bootstrap/scss/mixins";
@@ -56,3 +56,12 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 // Utilities
 @import "../node_modules/bootstrap/scss/utilities/api";
 // scss-docs-end import-stack
+
+body {
+  background-color: $dark;
+  color: $light;
+}
+
+.docker-container-info {
+  background-color: $secondary;
+}

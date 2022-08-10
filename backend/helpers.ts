@@ -1,4 +1,4 @@
-import readFileSync from '../compiled_bundle.js'
+import readFileSync from './compiled_static_files.js'
 
 export async function manifest() {
   const file = new TextDecoder().decode(readFileSync(`public/build/manifest.json`))
