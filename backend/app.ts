@@ -1,4 +1,4 @@
-import { Webview, SizeHint } from "https://deno.land/x/webview@0.7.3/mod.ts";
+import { Webview, SizeHint } from "https://deno.land/x/webview@0.7.5/mod.ts";
 import { getPort } from 'https://deno.land/x/getport@2.0.0/mod.ts'
 
 const port = await getPort()
