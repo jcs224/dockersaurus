@@ -2,8 +2,8 @@ import { Webview, SizeHint } from "https://deno.land/x/webview@0.7.5/mod.ts";
 import { getPort } from 'https://deno.land/x/getport@2.0.0/mod.ts'
 
 const port = await getPort()
-const worker_server = new Worker(new URL("./worker_server.ts", import.meta.url).href, { type: "module" })
-const worker_events = new Worker(new URL("./worker_events.ts", import.meta.url).href, { type: "module" })
+const worker_server = new Worker(import.meta.resolve("./worker_server.ts"), { type: "module" })
+const worker_events = new Worker(import.meta.resolve("./worker_events.ts"), { type: "module" })
 
 const channel = new MessageChannel()
 
